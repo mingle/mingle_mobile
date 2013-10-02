@@ -34,6 +34,7 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.post('/search', search.results );
+app.post('/move/:card_number/:status', search.moveCard );
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
