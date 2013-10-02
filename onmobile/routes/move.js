@@ -26,16 +26,17 @@ Mingle = rest.service(function(u, p) {
 
 var client = new Mingle(config.username, config.password);
 
-exports.results = function(req, res){
-  var cardNumber = req.body.card_number;
-  client.show(cardNumber).on('complete', function(cardDetails) {
-    if(cardDetails == undefined){
-      res.render("Oops could not find your card");
-      return true;
-    }
-    var title = cardDetails.card.name[0];
-    var description = cardDetails.card.description[0].trim();
-    res.render('search', { title: title + "( #" + cardNumber + " )", description: description, card_number: cardNumber });
-  });
-};
+var statuses = ["In Analysis", "ready for development", "In Dev", "Testing","Done"];
 
+exports.moveCard = function(req, res){
+  var cardNumber = req.params.card_number;
+  var moveTo = req.params.status;
+  console.log(moveTo);
+  console.log(cardNumber);
+  client.move(cardNumber, moveTo).on('complete', function(err, response){
+    if(response) {
+      res.render("card moved");
+    }
+  });
+  return true;
+};
