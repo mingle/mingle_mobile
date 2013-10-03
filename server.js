@@ -6,14 +6,14 @@ Mingle = rest.service(function(u, p) {
   this.defaults.username = u;
   this.defaults.password = p;
 }, {
-  baseURL: 'http://mingle.mingle-staging.thoughtworks.com'
+  baseURL: 'http://mingle_url'
 }, {
   show: function(id) {
-    return this.get('/api/v2/projects/ratchet/cards/' + id + ".xml");
+    return this.get('/api/v2/projects/project_identifier/cards/' + id + ".xml");
   }
 });
 
-var client = new Mingle('srao', 'Fr3m0nt#h0t');
+var client = new Mingle('username', 'password');
 
 client.show(1).on('complete', function(data) {
   
