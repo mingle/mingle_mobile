@@ -13,13 +13,10 @@ Mingle = rest.service(function(u, p) {
     return this.get('/api/v2/projects/'+ config.projectName +'/cards/' + id + ".xml");
   },
   move: function(id, status){
-    var data = { 'card[properties][][name]': 'status',
+    var data = { 'card[name]': "New card name goes here", 
+                 'card[properties][][name]': 'Status',
                  'card[properties][][value]': status };
-    rest.post('/api/v2/projects/' + config.projectName + '/cards/' + id + ".xml", {data: data}).on('complete', function(data, response) {
-      if(response.statusCode == 200 || response.statusCode == 201){
-        return true;
-      }
-    });
+    return this.put('/api/v2/projects/' + config.projectName + '/cards/' + id + ".xml", {data: data});
     
   }
 });
@@ -30,13 +27,10 @@ var statuses = ["In Analysis", "ready for development", "In Dev", "Testing","Don
 
 exports.moveCard = function(req, res){
   var cardNumber = req.params.card_number;
-  var moveTo = req.params.status;
+  var moveTo = statuses[req.params.status];
   console.log(moveTo);
-  console.log(cardNumber);
-  client.move(cardNumber, moveTo).on('complete', function(err, response){
-    if(response) {
-      res.render("card moved");
-    }
+  client.move(cardNumber, moveTo).on('complete', function(data, response) {
+    console.log(response);
+    res.render( 'move', { title: "card moved", statusCode: response.statusCode } );
   });
-  return true;
 };

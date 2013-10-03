@@ -11,16 +11,6 @@ Mingle = rest.service(function(u, p) {
 }, {
   show: function(id) {
     return this.get('/api/v2/projects/'+ config.projectName +'/cards/' + id + ".xml");
-  },
-  move: function(id, status){
-    var data = { 'card[properties][][name]': 'status',
-                 'card[properties][][value]': status };
-    rest.post('/api/v2/projects/' + config.projectName + '/cards/' + id + ".xml", {data: data}).on('complete', function(data, response) {
-      if(response.statusCode == 200 || response.statusCode == 201){
-        return true;
-      }
-    });
-    
   }
 });
 
@@ -33,9 +23,12 @@ exports.results = function(req, res){
       res.render("Oops could not find your card");
       return true;
     }
-    var title = cardDetails.card.name[0];
-    var description = cardDetails.card.description[0].trim();
-    res.render('search', { title: title + "( #" + cardNumber + " )", description: description, card_number: cardNumber });
+    if(cardDetails.card){
+      var title = cardDetails.card.name[0];
+      var description = cardDetails.card.description[0].trim();
+
+      res.render('search', { title: title + "( #" + cardNumber + " )", description: description, card_number: cardNumber });
+    }
   });
 };
 
