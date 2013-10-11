@@ -1,0 +1,7 @@
+var config = {}
+
+config.url = 'http://mingle.url.com';
+config.username = 'username'
+config.password = 'password'
+config.projectName = "ourproject"
+module.exports = config;
